@@ -1,0 +1,38 @@
+version: "3"
+
+services:
+  web:
+    image: nginx:latest
+    volumes:
+      - ./:/var/www
+      - ./_docker/nginx/conf.d:/etc/nginx/conf.d
+#    build:
+#      dockerfile: ./_docker/nginx/Dockerfile
+    ports:
+      - "80:80"
+    depends_on:
+      - app
+    container_name: zebomba_nginx
+  app:
+    build:
+      context: .
+      dockerfile: _docker/app/Dockerfile
+    depends_on:
+      - db
+    container_name: zebomba_app
+  db:
+    image: mysql:8.0
+    restart: unless-stopped
+    volumes:
+      - ./tmp/db:/var/lib/mysql
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - "3306:3306"
+    command: mysqld --character-set-server=utf8 --collation-server=utf8_unicode_ci
+    container_name: db_zebomba
+
+volumes:
+  mysqldata:
+    driver: local
