@@ -1,4 +1,4 @@
-FROM php:8.0-fpm
+FROM php:7.4-fpm
 
 RUN apt-get update && apt-get install -y \
       apt-utils \
@@ -22,10 +22,7 @@ RUN curl -sS https://getcomposer.org/installer | php -- \
     --filename=composer \
     --install-dir=/usr/local/bin
 
-COPY ./ /var/www
+COPY . /var/www
+WORKDIR /var/www
 
-WORKDIR /var/www/
-
-RUN #apt-get update && apt-get install -y libmcrypt-dev mysql-client && docker-php-ext-install mcrypt pdo_mysql
-#ADD . /var/www
 RUN chown -R www-data:www-data /var/www

@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,6 +18,4 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/test', function () {
-    return 'test1';
-});
+Route::get('/user_auth', [\App\Http\Controllers\UserAuthController::class, 'index']);
